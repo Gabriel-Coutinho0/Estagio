@@ -5,6 +5,7 @@ import CampoCadastro from "../components/campoCadastro";
 import SelectCargo from "../components/select";
 import { validador } from "../utils/validador";
 import { useNavigate, useParams } from "react-router-dom";
+import Navbar from "../components/navbar";
 const Swal = require('sweetalert2')
 
 
@@ -20,7 +21,7 @@ const AtualizarFuncionario = () => {
 
     let location = useNavigate();
     function comeback() {
-      location('/visualizar');
+        location('/visualizar');
     }
 
     function AtualizarFuncionario() {
@@ -68,12 +69,12 @@ const AtualizarFuncionario = () => {
             if (response.status === 200) {
                 Swal.fire({
                     icon: 'success',
-                    title: "Funcionário Atualizar com sucesso.",
+                    title: "Funcionário atualizado com sucesso.",
                 }).then((result) => result.isConfirmed ? comeback() : '')
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: "Erro ao Atualizar o funcionário.",
+                    title: "Erro ao atualizar o funcionário.",
                 })
             }
         })
@@ -103,29 +104,50 @@ const AtualizarFuncionario = () => {
     }, [])
     return (
         <>
-            <section className="bg-gray-50  dark:bg-blue-300">
-                <div className="flex flex-col z-0 items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-blue-50 dark:border-gray-900">
-                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:gray-900">
-                                Atualizar Funcionário
-                            </h1>
-                            <form className="space-y-4 md:space-y-6" action="#">
-                                <CampoCadastro titulo="Nome" type="text" id="nome" placeholder="Digite o nome" value={nome} setValue={setNome} />
-                                <CampoCadastro para="sobrenome" titulo="Sobrenome" type="text" name="sobrenome" id="sobrenome" placeholder="Digite o sobrenome" value={sobrenome} setValue={setSobrenome} />
-                                <div className="grid md:grid-cols-2 md:gap-6">
-                                    <CampoCadastro para="data" titulo="Data de inicio" type="date" name="data" id="data" value={data} setValue={setData} />
-                                    <SelectCargo cargo={cargo} setCargo={setCargo} listaCargos={cargos} />
-                                </div>
-                                <div className="md:flex md:space-x-6">
-                                    <Ativo ativo={ativo} setAtivo={setAtivo} />
-                                </div>
-                                <Botao titulo="Salvar" onclick={() => AtualizarFuncionario()} />
-                            </form>
-                        </div>
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
+                <div className="w-full bg-white rounded-lg shadow dark:border mt-0 max-w-md p-0 dark:bg-blue-50 dark:border-gray-900">
+                    <div className="p-6 space-y-4">
+                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:gray-900">
+                            Atualizar Funcionário
+                        </h1>
+                        <form className="space-y-4" action="#">
+                            <CampoCadastro
+                                titulo="Nome"
+                                type="text"
+                                id="nome"
+                                placeholder="Digite o nome"
+                                value={nome}
+                                setValue={setNome}
+                            />
+                            <CampoCadastro
+                                para="sobrenome"
+                                titulo="Sobrenome"
+                                type="text"
+                                name="sobrenome"
+                                id="sobrenome"
+                                placeholder="Digite o sobrenome"
+                                value={sobrenome}
+                                setValue={setSobrenome}
+                            />
+                            <CampoCadastro
+                                para="data"
+                                titulo="Data de início"
+                                type="date"
+                                name="data"
+                                id="data"
+                                value={data}
+                                setValue={setData}
+                            />
+                            <SelectCargo cargo={cargo} setCargo={setCargo} listaCargos={cargos} />
+                            <div className="flex justify-center">
+                                <Ativo ativo={ativo} setAtivo={setAtivo} />
+                            </div>
+                            <Botao titulo="Salvar" onclick={() => AtualizarFuncionario()} />
+                        </form>
                     </div>
                 </div>
-            </section>
+            </div>
+
         </>
     );
 }
