@@ -1,7 +1,5 @@
 import { useState, } from "react";
-import Ativo from "../components/ativo";
 import Botao from "../components/botao";
-import Navbar from '../components/navbar';
 import CampoCadastro from "../components/campoCadastro";
 import SelectCargo from "../components/select";
 import { validador } from "../utils/validador";
@@ -16,7 +14,6 @@ const CadastroFuncionario = () => {
   const [data, setData] = useState("")
   const cargos = ["DESENVOLVEDOR", "ADMINISTRADOR"]
   const [cargo, setCargo] = useState("")
-  const [ativo, setAtivo] = useState(false)
 
   let location = useNavigate();
   function comeback() {
@@ -63,7 +60,7 @@ const CadastroFuncionario = () => {
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ nome: nome, sobrenome: sobrenome, cargo: cargo, dataInicio: data, ativo: true })
+      body: JSON.stringify({ nome: nome, sobrenome: sobrenome, cargo: cargo, dataInicio: data + "T03:00:00.000Z", ativo: true })
     }).then((response) => {
       if (response.status === 200) {
         Swal.fire({
@@ -83,7 +80,6 @@ const CadastroFuncionario = () => {
     <>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
         <div className="w-full bg-white rounded-lg shadow dark:border max-w-md p-0 dark:bg-blue-50 dark:border-gray-900">
-          {/* <Navbar /> */}
           <div className="p-6 space-y-4">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:gray-900">
               Cadastro de Funcionário
@@ -117,9 +113,6 @@ const CadastroFuncionario = () => {
                 setValue={setData}
               />
               <SelectCargo setCargo={setCargo} listaCargos={cargos} />
-              <div className="flex justify-center">
-                {/* <Ativo ativo={ativo} setAtivo={setAtivo} /> */}
-              </div>
               <Botao titulo="Cadastrar" onclick={() => CadastrarFunc()} />
             </form>
           </div>

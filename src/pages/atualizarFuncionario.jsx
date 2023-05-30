@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import Ativo from "../components/ativo";
+
 import Botao from "../components/botao";
 import CampoCadastro from "../components/campoCadastro";
 import SelectCargo from "../components/select";
 import { validador } from "../utils/validador";
 import { useNavigate, useParams } from "react-router-dom";
-import Navbar from "../components/navbar";
 const Swal = require('sweetalert2')
 
 
@@ -15,7 +14,6 @@ const AtualizarFuncionario = () => {
     const [data, setData] = useState("")
     const cargos = ["DESENVOLVEDOR", "ADMINISTRADOR"]
     const [cargo, setCargo] = useState("")
-    const [ativo, setAtivo] = useState(false)
     const { id } = useParams();
 
 
@@ -64,7 +62,7 @@ const AtualizarFuncionario = () => {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ id: id, nome: nome, sobrenome: sobrenome, cargo: cargo, dataInicio: data, ativo: ativo })
+            body: JSON.stringify({ id: id, nome: nome, sobrenome: sobrenome, cargo: cargo, dataInicio: data + "T03:00:00.000Z", ativo: true })
         }).then((response) => {
             if (response.status === 200) {
                 Swal.fire({
@@ -93,7 +91,6 @@ const AtualizarFuncionario = () => {
                         setSobrenome(data.sobrenome)
                         setCargo(data.cargo)
                         setData(data.dataInicio)
-                        setAtivo(data.ativo)
                     }
                 });
         }
@@ -101,7 +98,7 @@ const AtualizarFuncionario = () => {
     useEffect(() => {
         getPorId(id);
 
-    }, [])
+    }, [id])
     return (
         <>
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
@@ -139,9 +136,6 @@ const AtualizarFuncionario = () => {
                                 setValue={setData}
                             />
                             <SelectCargo cargo={cargo} setCargo={setCargo} listaCargos={cargos} />
-                            <div className="flex justify-center">
-                                <Ativo ativo={ativo} setAtivo={setAtivo} />
-                            </div>
                             <Botao titulo="Salvar" onclick={() => AtualizarFuncionario()} />
                         </form>
                     </div>

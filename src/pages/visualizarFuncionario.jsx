@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react"
-import Navbar from "../components/navbar"
 const Swal = require('sweetalert2')
 
 
 const VisualizarFuncionario = () => {
     const header = ["Nome", "Sobrenome", "Cargo", "Data de inicio", "Ativo", "Atualizar", "Deletar"]
-    const [data, setData] = useState([])
-    const [searchTerm, setSearchTerm] = useState('');
-
-
+    const [funcionarios, setFuncionarios] = useState([])
+    const [procurarTermo, setProcurarTermo] = useState('');
+    const [funcionariosFiltrados, setFuncionariosFiltrados] = useState([])
 
     function getData() {
         fetch("http://187.60.56.72:3131/funcionario", {
@@ -17,27 +15,19 @@ const VisualizarFuncionario = () => {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then((resposta) => resposta.json()).then((data) => {
-            var users = []
-            data.forEach(element => {
-                if (
-                    element.nome.toLowerCase().includes(searchTerm.toLowerCase())
-                ) {
-                    users.push({
-                        id: element.id,
-                        nome: element.nome,
-                        sobrenome: element.sobrenome,
-                        cargo: element.cargo,
-                        dataInicio: element.dataInicio,
-                        ativo: element.ativo
-                    })
-                }
-            });
-
-            setData(users)
+            setFuncionarios(data)
+            setFuncionariosFiltrados(data)
         })
+    }
 
-
-
+    function filtrarFuncionarios(termo) {
+        if (!termo) {
+            return funcionarios
+        }
+        return funcionarios.filter((funcionario) => {
+            const campos = JSON.stringify(Object.values(funcionario)) //pegando os campos(valores) de todos os funcionarios
+            return campos.toLowerCase().includes(termo.toLowerCase())
+        })
     }
 
     function deletarFunc(id) {
@@ -77,22 +67,31 @@ const VisualizarFuncionario = () => {
         });
     }
 
-
     function verificarAtivo() {
-
-        if (data.ativo === false) {
+        if (funcionarios.ativo === false) {
             return "Inativo"
         } else {
             return "Ativo"
         }
     }
 
+    function formatarData(data) {
+        const partes = data.split("-");
+        console.log(data);
+        const ano = partes[0];
+        const mes = partes[1];
+        const dia = partes[2];
+
+        return `${dia}/${mes}/${ano}`;
+    }
+    
     useEffect(() => {
         getData();
-
-    }, [searchTerm])
+    }, [])
+    useEffect(() => {
+        setFuncionariosFiltrados(filtrarFuncionarios(procurarTermo))
+    }, [procurarTermo])
     return (
-
         <>
             <div className="flex flex-col w-auto  justify-center px-6 py-8 mx-auto h-screen">
                 <div className="bg-white rounded-lg  shadow dark:border mt-0 max-w-auto p-0 dark:bg-blue-50 dark:border-gray-900">
@@ -108,7 +107,7 @@ const VisualizarFuncionario = () => {
                                     </path>
                                 </svg>
                             </span>
-                            <input placeholder="Procurar" onChange={(e) => setSearchTerm(e.target.value)}
+                            <input placeholder="Procurar" onChange={(e) => setProcurarTermo(e.target.value)}
                                 className="appearance-none rounded-r-lg border border-gray-400 border-b block pl-8 pr-6 py-2 w-44 bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                         </div>
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -122,46 +121,47 @@ const VisualizarFuncionario = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.map(dat => {
+                                    {funcionariosFiltrados.sort((a, b) => a.nome.localeCompare(b.nome)).map(funcionario => {
+
                                         return (
                                             <tr
-                                                key={dat.id}
+                                                key={funcionario.nome}
                                                 className="bg-white hover:bg-gray-50 dark:hover:bg-gray-300 content-center"
                                             >
                                                 <td
-                                                    scope="row"
+
                                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
                                                 >
-                                                    {dat.nome}
+                                                    {funcionario.nome}
                                                 </td>
                                                 <td
-                                                    scope="row"
+
                                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
                                                 >
-                                                    {dat.sobrenome}
+                                                    {funcionario.sobrenome}
                                                 </td>
                                                 <td
-                                                    scope="row"
+
                                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
                                                 >
-                                                    {dat.cargo}
+                                                    {funcionario.cargo}
                                                 </td>
                                                 <td
-                                                    scope="row"
+
                                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
                                                 >
-                                                    {dat.dataInicio}
+                                                    {formatarData(funcionario.dataInicio)}
                                                 </td>
                                                 <td
-                                                    scope="row"
+
                                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
                                                 >
-                                                    {verificarAtivo(dat.ativo)}
+                                                    {verificarAtivo(funcionario.ativo)}
                                                 </td>
                                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray">
                                                     <button
                                                         onClick={() => {
-                                                            window.location.href = "/atualizar/" + dat.id;
+                                                            window.location.href = "/atualizar/" + funcionario.id;
                                                         }}
                                                         className="bg-blue-500 text-white font-bold py-2 px-4 rounded inline-flex items-center"
                                                     >
@@ -170,7 +170,7 @@ const VisualizarFuncionario = () => {
                                                 </td>
                                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray">
                                                     <button
-                                                        onClick={() => deletarFunc(dat.id)}
+                                                        onClick={() => deletarFunc(funcionario.id)}
                                                         className="bg-red-600 text-white font-bold py-2 px-4 rounded inline-flex items-center"
                                                     >
                                                         Deletar
