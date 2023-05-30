@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
+import Header from "../components/header"
+import Botao from "../components/botao"
 const Swal = require('sweetalert2')
 
 
-const VisualizarFuncionario = () => {
-    const header = ["Nome", "Sobrenome", "Cargo", "Data de inicio", "Ativo", "Atualizar", "Deletar"]
+const ListarFuncionario = () => {
+    const header = ["Nome", "Sobrenome", "Cargo", "Data de inicio", "Atualizar", "Deletar"]
     const [funcionarios, setFuncionarios] = useState([])
     const [procurarTermo, setProcurarTermo] = useState('');
     const [funcionariosFiltrados, setFuncionariosFiltrados] = useState([])
@@ -67,14 +69,6 @@ const VisualizarFuncionario = () => {
         });
     }
 
-    function verificarAtivo() {
-        if (funcionarios.ativo === false) {
-            return "Inativo"
-        } else {
-            return "Ativo"
-        }
-    }
-
     function formatarData(data) {
         const partes = data.split("-");
         console.log(data);
@@ -84,7 +78,7 @@ const VisualizarFuncionario = () => {
 
         return `${dia}/${mes}/${ano}`;
     }
-    
+
     useEffect(() => {
         getData();
     }, [])
@@ -96,9 +90,7 @@ const VisualizarFuncionario = () => {
             <div className="flex flex-col w-auto  justify-center px-6 py-8 mx-auto h-screen">
                 <div className="bg-white rounded-lg  shadow dark:border mt-0 max-w-auto p-0 dark:bg-blue-50 dark:border-gray-900">
                     <div className="p-6 space-y-4">
-                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:gray-900">
-                            Visualizar funcionário
-                        </h1>
+                        <Header titulo="Lista de funcionários"/>
                         <div className="block relative">
                             <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
                                 <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current text-gray-500">
@@ -108,7 +100,7 @@ const VisualizarFuncionario = () => {
                                 </svg>
                             </span>
                             <input placeholder="Procurar" onChange={(e) => setProcurarTermo(e.target.value)}
-                                className="appearance-none rounded-r-lg border border-gray-400 border-b block pl-8 pr-6 py-2 w-44 bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
+                                className="appearance-none rounded-full border border-gray-400 border-b block pl-8 pr-6 py-2 w-44 bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                         </div>
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -121,7 +113,8 @@ const VisualizarFuncionario = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {funcionariosFiltrados.sort((a, b) => a.nome.localeCompare(b.nome)).map(funcionario => {
+                                    {/* {funcionariosFiltrados.sort((a, b) => a.nome.localeCompare(b.nome)).map(funcionario => { */}
+                                    {funcionariosFiltrados.sort((a, b) => new Date(a.dataInicio) - new Date(b.dataInicio)).map(funcionario => {
 
                                         return (
                                             <tr
@@ -152,29 +145,17 @@ const VisualizarFuncionario = () => {
                                                 >
                                                     {formatarData(funcionario.dataInicio)}
                                                 </td>
-                                                <td
 
-                                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
-                                                >
-                                                    {verificarAtivo(funcionario.ativo)}
-                                                </td>
                                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray">
-                                                    <button
-                                                        onClick={() => {
+                                                    <Botao onclick={()=>{
                                                             window.location.href = "/atualizar/" + funcionario.id;
-                                                        }}
-                                                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-                                                    >
-                                                        Atualizar
-                                                    </button>
+                                                        }} 
+                                                        titulo="Atualizar" className="bg-blue-500 text-white font-bold py-2 px-4 rounded inline-flex items-center"/>
                                                 </td>
                                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray">
-                                                    <button
-                                                        onClick={() => deletarFunc(funcionario.id)}
-                                                        className="bg-red-600 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-                                                    >
-                                                        Deletar
-                                                    </button>
+                                                    <Botao onclick={() => deletarFunc(funcionario.id)}
+                                                        titulo="Deletar" className="bg-red-600 text-white font-bold py-2 px-4 rounded inline-flex items-center" />
+                                                    
                                                 </td>
                                             </tr>
                                         );
@@ -190,4 +171,4 @@ const VisualizarFuncionario = () => {
     );
 }
 
-export default VisualizarFuncionario;
+export default ListarFuncionario;

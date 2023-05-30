@@ -4,6 +4,7 @@ import CampoCadastro from "../components/campoCadastro";
 import SelectCargo from "../components/select";
 import { validador } from "../utils/validador";
 import { useNavigate, } from "react-router-dom";
+import Header from "../components/header";
 const Swal = require('sweetalert2')
 
 
@@ -17,11 +18,10 @@ const CadastroFuncionario = () => {
 
   let location = useNavigate();
   function comeback() {
-    location('/visualizar');
+    location('/listar');
   }
 
   function CadastrarFunc() {
-    console.log(data);
     if (validador.estaVazio(nome)) {
       Swal.fire({
         icon: 'error',
@@ -50,7 +50,7 @@ const CadastroFuncionario = () => {
     if (validador.validarSelect(cargo)) {
       Swal.fire({
         icon: 'error',
-        title: "Por favor selecione uma opção.",
+        title: "Por favor selecione o cargo.",
       })
       return
     }
@@ -81,39 +81,13 @@ const CadastroFuncionario = () => {
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
         <div className="w-full bg-white rounded-lg shadow dark:border max-w-md p-0 dark:bg-blue-50 dark:border-gray-900">
           <div className="p-6 space-y-4">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:gray-900">
-              Cadastro de Funcionário
-            </h1>
+            <Header titulo="Cadastro de funcionário" />
             <form className="space-y-4" action="#">
-              <CampoCadastro
-                titulo="Nome"
-                type="text"
-                id="nome"
-                placeholder="Digite o nome"
-                value={nome}
-                setValue={setNome}
-              />
-              <CampoCadastro
-                para="sobrenome"
-                titulo="Sobrenome"
-                type="text"
-                name="sobrenome"
-                id="sobrenome"
-                placeholder="Digite o sobrenome"
-                value={sobrenome}
-                setValue={setSobrenome}
-              />
-              <CampoCadastro
-                para="data"
-                titulo="Data de início"
-                type="date"
-                name="data"
-                id="data"
-                value={data}
-                setValue={setData}
-              />
+              <CampoCadastro titulo="Nome" type="text" id="nome" placeholder="Digite o nome" value={nome} setValue={setNome} />
+              <CampoCadastro para="sobrenome" titulo="Sobrenome" type="text" name="sobrenome" id="sobrenome" placeholder="Digite o sobrenome" value={sobrenome} setValue={setSobrenome} />
+              <CampoCadastro para="data" titulo="Data de início" type="date" name="data" id="data" value={data} setValue={setData} />
               <SelectCargo setCargo={setCargo} listaCargos={cargos} />
-              <Botao titulo="Cadastrar" onclick={() => CadastrarFunc()} />
+              <Botao titulo="Cadastrar" className="w-full text-gray-900 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onclick={() => CadastrarFunc()} />
             </form>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import './App.css';
 import CadastroFuncionario from './pages/cadastroFuncionario';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import VisualizarFuncionario from './pages/visualizarFuncionario';
+import ListarFuncionario from './pages/listarFuncionario';
 import Navbar from './components/navbar';
 import AtualizarFuncionario from './pages/atualizarFuncionario';
 
@@ -15,7 +15,7 @@ function App() {
         <div>
           <Routes>
             <Route path='/' element={<CadastroFuncionario />} />
-            <Route path='/visualizar' element={<VisualizarFuncionario />} />
+            <Route path='/listar' element={<ListarFuncionario />} />
             <Route path='/atualizar/:id' element={<AtualizarFuncionario />} />
           </Routes>
         </div>

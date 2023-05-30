@@ -1,13 +1,13 @@
 const Navbar = () => {
   const nav = [
-    { titulo: "Cadastrar", link: "/" },
-    { titulo: "Visualizar", link: "/visualizar" }];
+    { titulo: "Cadastrar Funcionário", link: "/" },
+    { titulo: "Listar Funcionário", link: "/listar" }];
 
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-50 w-full z-10">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="/visualizar" className="flex items-center">
+        <a href="/listar" className="flex items-center">
           <img
             src="https://cdn.bitrix24.com.br/b13772517/sender/be6/be612427cf98746b2aabd3989116d1a8/c73ac8c47757f6a2ac317088ba524040.png"
             className="h-8 mr-3"

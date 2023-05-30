@@ -19,7 +19,7 @@ const AtualizarFuncionario = () => {
 
     let location = useNavigate();
     function comeback() {
-        location('/visualizar');
+        location('/listar');
     }
 
     function AtualizarFuncionario() {
@@ -108,35 +108,11 @@ const AtualizarFuncionario = () => {
                             Atualizar Funcionário
                         </h1>
                         <form className="space-y-4" action="#">
-                            <CampoCadastro
-                                titulo="Nome"
-                                type="text"
-                                id="nome"
-                                placeholder="Digite o nome"
-                                value={nome}
-                                setValue={setNome}
-                            />
-                            <CampoCadastro
-                                para="sobrenome"
-                                titulo="Sobrenome"
-                                type="text"
-                                name="sobrenome"
-                                id="sobrenome"
-                                placeholder="Digite o sobrenome"
-                                value={sobrenome}
-                                setValue={setSobrenome}
-                            />
-                            <CampoCadastro
-                                para="data"
-                                titulo="Data de início"
-                                type="date"
-                                name="data"
-                                id="data"
-                                value={data}
-                                setValue={setData}
-                            />
+                            <CampoCadastro titulo="Nome" type="text" id="nome" placeholder="Digite o nome" value={nome} setValue={setNome} />
+                            <CampoCadastro para="sobrenome" titulo="Sobrenome" type="text" name="sobrenome" id="sobrenome" placeholder="Digite o sobrenome" value={sobrenome} setValue={setSobrenome} />
+                            <CampoCadastro para="data" titulo="Data de início" type="date" name="data" id="data" value={data} setValue={setData} />
                             <SelectCargo cargo={cargo} setCargo={setCargo} listaCargos={cargos} />
-                            <Botao titulo="Salvar" onclick={() => AtualizarFuncionario()} />
+                            <Botao titulo="Salvar" className="w-full text-gray-900 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onclick={() => AtualizarFuncionario()} />
                         </form>
                     </div>
                 </div>
