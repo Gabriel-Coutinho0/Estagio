@@ -71,7 +71,6 @@ const ListarFuncionario = () => {
 
     function formatarData(data) {
         const partes = data.split("-");
-        console.log(data);
         const ano = partes[0];
         const mes = partes[1];
         const dia = partes[2];
@@ -113,7 +112,6 @@ const ListarFuncionario = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* {funcionariosFiltrados.sort((a, b) => a.nome.localeCompare(b.nome)).map(funcionario => { */}
                                     {funcionariosFiltrados.sort((a, b) => new Date(a.dataInicio) - new Date(b.dataInicio)).map(funcionario => {
 
                                         return (

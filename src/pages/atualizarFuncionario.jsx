@@ -23,7 +23,6 @@ const AtualizarFuncionario = () => {
     }
 
     function AtualizarFuncionario() {
-        console.log(data);
         if (validador.estaVazio(nome)) {
             Swal.fire({
                 icon: 'error',
